@@ -1,0 +1,49 @@
+.feed__grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  margin-top: 16px;
+}
+
+
+.post-card {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #fff;
+}
+
+
+.post-card__link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+
+.post-card__media img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  display: block;
+}
+
+.post-card__placeholder {
+  width: 100%;
+  height: 160px;
+  background: #e9e9e9;
+}
+
+.post-card__content {
+  padding: 12px;
+}
+
+.post-card__title {
+  margin: 0 0 8px 0;
+  font-size: 18px;
+}
+
+.post-card__meta {
+  margin: 0;
+  font-size: 14px;
+  opacity: 0.75;
+}
