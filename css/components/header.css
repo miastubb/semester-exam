@@ -1,15 +1,39 @@
 .site-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
   position: sticky;
+  top: 0;
+  z-index: 10;
   background-color: #F5E5FF;
-  padding: 16px;
   border-bottom: 1px solid #e6e6e6;
+}
 
-  /* keeps the header aligned with page content */
+.site-header__inner {
   max-width: 1200px;
   margin: 0 auto;
+  padding: 16px;
+}
+
+.site-header--centered .site-header__inner {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+}
+
+.brand--text {
+  justify-self: start;
+}
+
+.brand--logo {
+  justify-self: center;
+}
+
+.site-header--centered .nav {
+  justify-self: end;
+}
+
+.brand__logo {
+  height: 36px;
+  width: auto;
+  display: block;
 }
 
 .brand {
@@ -72,6 +96,33 @@
     flex-direction: column;
     align-items: flex-start;
     gap: 12px;
+  }
+
+  .nav__list {
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 520px) {
+  .site-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  /* If centered layout is enabled, stack items cleanly */
+  .site-header--centered {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .brand--logo {
+    justify-self: start;
+  }
+
+  .site-header--centered .nav {
+    justify-self: start;
   }
 
   .nav__list {
