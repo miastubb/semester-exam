@@ -9,3 +9,15 @@
 @import url("./components/footer.css");
 @import url("./variables.css");
 /* Global styles */
+@import url("https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;600;700&display=swap");
+.brand {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.brand__logo {
+  height: 36px;
+  width: auto;
+  display: block;
+}
