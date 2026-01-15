@@ -1,3 +1,7 @@
+import { renderLayout } from "../components/layout.js";
+
+renderLayout();
+
 import { getPosts } from "../api/posts.js";
 import { createPostCard } from "../components/postCard.js";
 

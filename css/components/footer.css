@@ -1,0 +1,20 @@
+.site-footer {
+  max-width: 1200px;
+  margin: 0 auto;
+
+  padding: 20px 16px;
+  border-top: 1px solid #e6e6e6;
+
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.site-footer__text {
+  margin: 0;
+}
+
+.site-footer__muted {
+  opacity: 0.65;
+  font-size: 14px;
+}
