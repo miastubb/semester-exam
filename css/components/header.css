@@ -64,19 +64,23 @@
 }
 
 .nav__link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   text-decoration: none;
-  padding: 10px 12px;
-  border-radius: 10px;
+  padding: var(--btn-pad-y) var(--btn-pad-x);
+  border-radius: var(--btn-radius);
+  font-weight: var(--fw-semibold);
+  background: rgba(255, 255, 255, 0.35);
+  border: 1px solid rgba(0, 0, 0, 0.15);
   color: inherit;
-}
 
+  transition: background var(--dur-150) var(--ease);
+}
 .nav__link:hover {
   background: rgba(0, 0, 0, 0.06);
 }
 
-.nav__link--primary {
-  border: 1px solid rgba(0, 0, 0, 0.15);
-}
 
 .nav__button {
   border: 1px solid rgba(0, 0, 0, 0.15);
@@ -92,27 +96,7 @@
 
 /* Basic responsive behavior */
 @media (max-width: 520px) {
-  .site-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
-  }
-
-  .nav__list {
-    flex-wrap: wrap;
-  }
-}
-
-@media (max-width: 520px) {
-  .site-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
-  }
-
-  /* If centered layout is enabled, stack items cleanly */
-  .site-header--centered {
-    display: grid;
+  .site-header--centered .site-header__inner {
     grid-template-columns: 1fr;
     gap: 12px;
   }

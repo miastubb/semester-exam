@@ -1,0 +1,176 @@
+/* @format */
+
+:root {
+  /* =========================
+     Fonts
+  ========================== */
+  --font-sans: "Instrument Sans", system-ui, -apple-system, "Segoe UI", Roboto, Arial,
+    "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+
+  /* =========================
+     Font sizes
+  ========================== */
+  --text-xs: 12px;
+  --text-sm: 14px;
+  --text-md: 16px;
+  --text-lg: 18px;
+  --text-xl: 20px;
+  --text-2xl: 24px;
+  --text-3xl: 32px;
+
+  /* =========================
+     Font weights
+  ========================== */
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+  --fw-extrabold: 800;
+
+  /* =========================
+     Line heights
+  ========================== */
+  --lh-tight: 1.2;
+  --lh-normal: 1.5;
+  --lh-relaxed: 1.7;
+
+  /* =========================
+     Colors (Base / Neutrals)
+  ========================== */
+  --color-text: #1f1f1f;
+  --color-text-muted: rgba(0, 0, 0, 0.65);
+  --color-bg: #ffffff;
+
+  --color-surface: #ffffff;
+  --color-surface-muted: #f7f7f7;
+
+  --color-border: rgba(0, 0, 0, 0.12);
+  --color-border-strong: rgba(0, 0, 0, 0.18);
+
+  /* =========================
+     Brand colors
+     (Your header background is brand-adjacent)
+  ========================== */
+  --color-brand-100: #f5e5ff; /* header background */
+  --color-brand-200: #eed3ff;
+
+  /* Accent can be used for buttons, links, highlights */
+  --color-accent: #6f2dbd;
+  --color-accent-hover: #5f25a3;
+  --color-accent-contrast: #ffffff;
+
+  /* =========================
+     Semantic colors
+  ========================== */
+  --color-success: #138a36;
+  --color-warning: #b26a00;
+  --color-danger: #b42318;
+  --color-info: #175cd3;
+
+  /* =========================
+     Links
+  ========================== */
+  --color-link: var(--color-accent);
+  --color-link-hover: var(--color-accent-hover);
+
+  /* =========================
+     Spacing scale
+  ========================== */
+  --space-2: 2px;
+  --space-4: 4px;
+  --space-6: 6px;
+  --space-8: 8px;
+  --space-10: 10px;
+  --space-12: 12px;
+  --space-16: 16px;
+  --space-20: 20px;
+  --space-24: 24px;
+  --space-32: 32px;
+  --space-40: 40px;
+  --space-48: 48px;
+  --space-64: 64px;
+
+  /* =========================
+     Layout / containers
+  ========================== */
+  --container-max: 1200px;
+  --container-pad: 16px;
+
+  /* Header/footer sizing */
+  --header-height: 70px;
+
+  /* =========================
+     Border radius
+  ========================== */
+  --radius-sm: 8px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 18px;
+
+  /* =========================
+     Shadows
+  ========================== */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 6px 18px rgba(0, 0, 0, 0.10);
+  --shadow-lg: 0 12px 30px rgba(0, 0, 0, 0.12);
+
+  /* =========================
+     Transitions
+  ========================== */
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --dur-150: 150ms;
+  --dur-250: 250ms;
+
+  /* =========================
+     Components: Buttons
+  ========================== */
+  --btn-radius: var(--radius-md);
+  --btn-pad-y: 10px;
+  --btn-pad-x: 12px;
+  --btn-primary-bg: #1f1f1f;
+  --btn-primary-bg-hover: #111111;
+  --btn-primary-text: #ffffff;
+
+  --btn-secondary-bg: #ffffff;
+  --btn-secondary-bg-hover: #f4f4f4;
+  --btn-secondary-text: #1f1f1f;
+  --btn-secondary-border: rgba(0, 0, 0, 0.18);
+
+  --btn-ghost-bg-hover: rgba(0, 0, 0, 0.06);
+  --btn-ghost-text: #1f1f1f;
+
+  --btn-danger-bg: #b42318;
+  --btn-danger-bg-hover: #912018;
+  --btn-danger-text: #ffffff;
+
+
+
+  /* =========================
+     Components: Forms
+  ========================== */
+  --input-height: 44px;
+  --input-radius: var(--radius-md);
+  --input-border: var(--color-border);
+  --input-bg: #ffffff;
+
+  /* =========================
+     Z-index scale
+  ========================== */
+  --z-header: 10;
+  --z-modal: 100;
+  --z-toast: 200;
+}
+
+/* Optional: Dark mode scaffold (only use if your exam requires it)
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-text: #f2f2f2;
+    --color-text-muted: rgba(255, 255, 255, 0.72);
+    --color-bg: #121212;
+    --color-surface: #1a1a1a;
+    --color-surface-muted: #202020;
+    --color-border: rgba(255, 255, 255, 0.16);
+    --color-border-strong: rgba(255, 255, 255, 0.22);
+  }
+}
+*/
