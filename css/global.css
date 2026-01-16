@@ -11,14 +11,9 @@
 
 /* Global styles */
 @import url("https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;600;700&display=swap");
-.brand {
-  display: flex;
-  align-items: center;
-  text-decoration: none;
+html, body {
+  margin: 0;
+  padding: 0;
 }
 
-.brand__logo {
-  height: 36px;
-  width: auto;
-  display: block;
-}
+

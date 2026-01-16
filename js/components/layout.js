@@ -1,10 +1,13 @@
-import Header from "./header.js";
+import Header, { initHeaderMenu } from "./header.js";
 import Footer from "./footer.js";
 import { clearToken, isLoggedIn } from "../storage/token.js";
 
 export function renderLayout() {
   const headerEl = document.querySelector("#site-header");
   const footerEl = document.querySelector("#site-footer");
+
+  headerEl.innerHTML = Header();
+  initHeaderMenu();
 
 
   if (!headerEl || !footerEl) {
