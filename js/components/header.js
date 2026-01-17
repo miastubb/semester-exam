@@ -27,7 +27,7 @@ export default function Header() {
       </a>
 
       <a class="brand brand--logo" href="/index.html" aria-label="Go to BlogWorld feed">
-        <img src="./assets/img/blogworld-logo.svg" alt="BlogWorld" class="brand__logo"/>
+        <img src="assets/img/blogworld-logo.svg" alt="BlogWorld" class="brand__logo"/>
 
       <div class="header-actions">
         <nav class="nav nav--desktop" aria-label="Main navigation">
