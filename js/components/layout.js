@@ -18,6 +18,8 @@ export function renderLayout() {
   headerEl.innerHTML = Header();
   footerEl.innerHTML = Footer();
 
+  initHeaderMenu();
+
 
   if (isLoggedIn()) {
     const logOutBtn = document.querySelector("#log-out-btn");
