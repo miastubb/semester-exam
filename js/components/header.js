@@ -26,9 +26,10 @@ export default function Header() {
         <span class="brand__name">Client Name</span>
       </a>
 
-      <a class="brand brand--logo" href="/index.html" aria-label="Go to BlogWorld feed">
-        <img src="../assets/img/blogworld-logo.svg" alt="BlogWorld" class="brand__logo" />
-      </a>
+      <a class="brand brand--logo" href="/semester-exam/index.html" aria-label="Go to BlogWorld feed">
+  <img src="/semester-exam/assets/img/blogworld-logo.svg" alt="BlogWorld" class="brand__logo" />
+</a>
+
 
       <div class="header-actions">
         <nav class="nav nav--desktop" aria-label="Main navigation">
