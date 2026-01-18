@@ -1,3 +1,100 @@
 import { renderLayout } from "../components/layout.js";
+import { apiRequest } from "../api/client.js";
+import { setToken }  from "../storage/token.js";
 
 renderLayout();
+
+
+const root = document.getElementById("page-root");
+
+root.innerHTML = `
+  <section class="auth-page">
+    <div class="auth-card">
+      <h1>Login</h1>
+
+      <form id="loginForm" novalidate>
+        <div class="form-group">
+          <label for="email">Email (stud.noroff.no)</label>
+          <input id="email" name="email" type="email" autocomplete="email" required />
+          <p class="field-error" data-error-for="email" aria-live="polite"></p>
+        </div>
+
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input id="password" name="password" type="password" autocomplete="current-password" minlength="8" required />
+          <p class="field-error" data-error-for="password" aria-live="polite"></p>
+        </div>
+
+        <button class="btn btn--primary" type="submit">Login</button>
+        <p class="form-error" id="formError" aria-live="assertive"></p>
+
+        <p class="auth-alt">
+          No account? <a href="./register.html">Create one here</a>
+        </p>
+      </form>
+    </div>
+  </section>
+
+`;
+
+const form = document.getElementById("loginForm");
+const formError = document.getElementById("formError");
+
+
+function setFieldError(name, message) {
+  const el = root.querySelector(`[data-error-for="${name}"]`);
+  if (el) el.textContent = message || "";
+}
+
+function validateLogin({ email, password}) {
+  let ok = true;
+
+  setFieldError("email", "");
+  setFieldError("password", "");
+  formError.textContent = "";
+
+  if (!email) {
+    setFieldError("email", "Email is required");
+    ok = false;
+  } else if (!email.endsWith("@stud.noroff.no")) {
+    setFieldError("email", "Use your stud.noroff.no address");
+   ok = false;
+  }
+
+  if (!password) {
+    setFieldError("password", "Password is required");
+    ok = false;
+  } else if (password.length < 8) {
+    setFieldError("password", "Password must be at least 8 characters");
+    ok = false;
+  }
+
+  return ok;
+}
+
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const email = form.elements.email?.value?.trim() || "";
+  const password = form.elements.password?.value || "";
+
+
+  if (!validateLogin({ email, password })) return;
+
+  try {
+    const res =await apiRequest("/auth/login", {
+      method: "POST",
+      body: JSON.stringify({ email, password }),    
+    })
+
+    const accessToken = res?.data?.accessToken;
+    if (!accessToken) throw new Error("login succeded but no access token returned");
+
+    setToken(accessToken);
+
+    window.location.href = "../index.html";
+  } catch (error) {
+    formError.textContent = error.message || "Login failed, please try again";
+  }
+});
