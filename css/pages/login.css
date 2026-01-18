@@ -1,0 +1,109 @@
+/* =========================
+   Page: Login
+   Uses global tokens from variables.css
+   ========================= */
+
+.auth-page {
+  min-height: calc(100vh - var(--header-height));
+  display: grid;
+  place-items: center;
+  padding: var(--space-24) var(--space-16);
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 520px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-24);
+  box-shadow: var(--shadow-lg);
+}
+
+.auth-card h1 {
+  margin: 0 0 var(--space-16);
+  font-size: var(--text-3xl);
+  line-height: var(--lh-tight);
+  letter-spacing: -0.01em;
+}
+
+#loginForm {
+  display: grid;
+  gap: var(--space-16);
+}
+
+.form-group {
+  display: grid;
+  gap: var(--space-6);
+}
+
+.form-group label {
+  font-size: var(--text-sm);
+  font-weight: var(--fw-semibold);
+  color: var(--color-text);
+}
+
+.form-group input {
+  height: var(--input-height);
+  width: 100%;
+  padding: 0 var(--space-12);
+  font-size: var(--text-md);
+  font-family: var(--font-sans);
+
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
+  border-radius: var(--input-radius);
+  color: var(--color-text);
+
+  outline: none;
+  transition: border-color var(--dur-150) var(--ease),
+    box-shadow var(--dur-150) var(--ease);
+}
+
+.form-group input:focus {
+  border-color: var(--color-border-strong);
+  box-shadow: 0 0 0 4px rgba(111, 45, 189, 0.14);
+}
+
+.field-hint {
+  margin: 0;
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+
+.field-error {
+  margin: 0;
+  min-height: 16px;
+  font-size: var(--text-xs);
+  color: var(--color-danger);
+}
+
+.form-error {
+  margin: 0;
+  min-height: 18px;
+  font-size: var(--text-sm);
+  color: var(--color-danger);
+}
+
+#loginForm .btn {
+  width: 100%;
+  margin-top: var(--space-4);
+}
+
+.auth-alt {
+  margin: var(--space-8) 0 0;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  text-align: center;
+}
+
+.auth-alt a {
+  color: var(--color-link);
+  font-weight: var(--fw-semibold);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.auth-alt a:hover {
+  color: var(--color-link-hover);
+}
