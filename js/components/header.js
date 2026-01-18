@@ -27,7 +27,8 @@ export default function Header() {
       </a>
 
       <a class="brand brand--logo" href="/index.html" aria-label="Go to BlogWorld feed">
-        <img src="assets/img/blogworld-logo.svg" alt="BlogWorld" class="brand__logo"/>
+        <img src="../assets/img/blogworld-logo.svg" alt="BlogWorld" class="brand__logo" />
+      </a>
 
       <div class="header-actions">
         <nav class="nav nav--desktop" aria-label="Main navigation">
@@ -62,41 +63,45 @@ export default function Header() {
 `;
 }
 
-
 export function initHeaderMenu() {
   const menuToggle = document.querySelector(".menu-toggle");
   const mobileMenu = document.querySelector("#mobile-menu");
   if (!menuToggle || !mobileMenu) return;
 
-
-  menuToggle.setAttribute("aria-expanded", "false");
-  mobileMenu.hidden = true;
-
-
-  const close = () => {
-    menuToggle.setAttribute("aria-expanded", "false");
-    mobileMenu.hidden = true;
+  const setState = (isOpen) => {
+    menuToggle.setAttribute("aria-expanded", String(isOpen));
+    mobileMenu.hidden = !isOpen;
   };
 
-  const open = () => {
-    menuToggle.setAttribute("aria-expanded", "true");
-    mobileMenu.hidden = false;
-  };
+  const isOpen = () => menuToggle.getAttribute("aria-expanded") === "true";
 
-  menuToggle.addEventListener("click", () => {
-    const isOpen = menuToggle.getAttribute("aria-expanded") === "true";
-    isOpen ? close() : open();
+  const close = () => setState(false);
+  const open = () => setState(true);
+  const toggle = () => (isOpen() ? close() : open());
+
+  setState(false);
+
+  menuToggle.addEventListener("click", (e) => {
+    e.stopPropagation(); 
+    toggle();
   });
 
   document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") close();
+    if (e.key === "Escape" && isOpen()) close();
   });
 
   document.addEventListener("click", (e) => {
+    if (!isOpen()) return;
     const clickedInside = mobileMenu.contains(e.target) || menuToggle.contains(e.target);
     if (!clickedInside) close();
   });
+
+  mobileMenu.addEventListener("click", (e) => {
+    const linkOrButton = e.target.closest("a, button");
+    if (linkOrButton) close();
+  });
+
+  window.addEventListener("resize", () => {
+    if (window.matchMedia("(min-width: 992px)").matches) close();
+  });
 }
-
-
-       
