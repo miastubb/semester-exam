@@ -1,9 +1,11 @@
 import { renderLayout } from "../components/layout.js";
 import { apiRequest } from "../api/client.js";
 import { setToken }  from "../storage/token.js";
+import { getApiKey, setApiKey } from "../storage/apiKey.js";
+import { CONFIG } from "../api/config.js";
+
 
 renderLayout();
-
 
 const root = document.getElementById("page-root");
 
@@ -83,16 +85,31 @@ form.addEventListener("submit", async (e) => {
   if (!validateLogin({ email, password })) return;
 
   try {
-    const res =await apiRequest("/auth/login", {
+    const res =await apiRequest(`${CONFIG.BASE_URL}/auth/login`, {
       method: "POST",
       body: JSON.stringify({ email, password }),    
-    })
+    });
 
-    const accessToken = res?.data?.accessToken;
-    if (!accessToken) throw new Error("login succeded but no access token returned");
+  const accessToken = res?.data?.accessToken;
+  if (!accessToken) throw new Error("login succeeded but no access token returned");
 
     setToken(accessToken);
 
+
+  
+  const existingKey = getApiKey();
+
+  if (!existingKey) {
+     const apiKeyRes = await apiRequest(`${CONFIG.BASE_URL}/auth/create-api-key`, {
+    method: "POST",
+    body: JSON.stringify({ name: "semester-exam-key" }),
+     });
+
+  const apiKey = apiKeyRes?.data?.key;
+  if (apiKey) {
+    setApiKey(apiKey);
+  }
+}
     window.location.href = "../index.html";
   } catch (error) {
     formError.textContent = error.message || "Login failed, please try again";

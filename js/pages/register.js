@@ -1,5 +1,8 @@
 import { renderLayout } from "../components/layout.js";
 import { apiRequest } from "../api/client.js";
+import { CONFIG } from "../api/config.js";
+
+
 
 
 renderLayout();
@@ -103,10 +106,10 @@ form.addEventListener("submit", async (e) => {
   if (!validateRegister({ name, email, password })) return;
 
   try {
-    await apiRequest("/auth/register", {
+    await apiRequest(`${CONFIG.BASE_URL}/auth/register`, {
       method: "POST",
       body: JSON.stringify({ name, email, password }),    
-    })
+    });
 
     window.location.href = "./login.html";
   } catch (error) {

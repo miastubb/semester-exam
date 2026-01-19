@@ -1,15 +1,26 @@
 import { getToken } from "../storage/token.js";
+import { CONFIG } from "./config.js";
+import { getApiKey } from "../storage/apiKey.js";
+
+
 
 export async function apiRequest(url, options = {}) {
   const headers = new Headers(options.headers || {});
   headers.set("Content-Type", "application/json");
 
-  const token = getToken();
-  if (token) {
-    headers.set("Authorization", `Bearer ${token}`);
-  }
 
-  const response = await fetch(url, { ...options, headers });
+  const token = getToken();
+  if (token) 
+    headers.set("Authorization", `Bearer ${token}`);
+
+
+  const apiKey = getApiKey();
+  if (apiKey) headers.set("X-Noroff-API-Key", apiKey);
+  
+
+  const fullUrl = url.startsWith("/") ? `${CONFIG.BASE_URL}${url}` : url;
+  const response = await fetch(fullUrl, { ...options, headers });
+
 
   const contentType = response.headers.get("content-type") || "";
   const payload = contentType.includes("application/json")
