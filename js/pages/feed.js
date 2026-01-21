@@ -1,9 +1,10 @@
 import { renderLayout } from "../components/layout.js";
+import { getPosts } from "../api/posts.js";
+import { createPostCard } from "../components/postCard.js";
+
 
 renderLayout();
 
-import { getPosts } from "../api/posts.js";
-import { createPostCard } from "../components/postCard.js";
 
 const root = document.querySelector("#page-root");
 
@@ -43,7 +44,7 @@ async function init() {
   try {
     renderLoading();
     const response = await getPosts({ limit: 12, sort: "created", sortOrder: "desc" });
-    const posts = response.data || [];
+    const posts = response?.data ?? [];
 
     if (posts.length === 0) {
       root.innerHTML = `<p>No posts yet. Create your first post.</p>`;
