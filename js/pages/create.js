@@ -7,7 +7,7 @@ renderLayout();
 
 const root = document.querySelector("#page-root");
 
-function rendeer() {
+function render() {
   root.innerHTML = `
     <section class="create-post">
       <h1>Create Post</h1>
@@ -107,7 +107,7 @@ async function onSubmit(e) {
 
 function init() {
   if (!root) return;
-  rendeer();
+  render();
 
   const form = document.querySelector("#createPostForm");
   form.addEventListener("submit", onSubmit);
