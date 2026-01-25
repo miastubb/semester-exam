@@ -1,75 +1,81 @@
 import { renderLayout } from "../components/layout.js";
-import { getToken } from "../storage/token.js";
 import { CONFIG } from "../api/config.js";
+import { getToken } from "../storage/token.js";
 import { getPostById, updatePost } from "../api/posts.js";
-
 
 renderLayout();
 
-
 const root = document.querySelector("#page-root");
-if (!root) throw new Error("missing #page-root");
-
+if (!root) throw new Error("Missing #page-root");
 
 const token = getToken();
 if (!token) {
   window.location.href = `${CONFIG.BASE_PATH}account/login.html`;
-  throw new Error("No access token - redirecting to login");
+  throw new Error("No token - redirecting to login");
 }
-
 
 const params = new URLSearchParams(window.location.search);
 const postId = params.get("id");
 
-if (!postId) {
+
+if (!postId || postId === "undefined") {
   root.innerHTML = `
     <section class="container">
       <h1>Edit post</h1>
-      <p>Missing post ID. Go back to the feed and choose a post to edit.</p>
+      <p class="form-message" data-type="error">Missing or invalid post ID.</p>
       <a class="btn btn--primary" href="${CONFIG.BASE_PATH}index.html">Back to feed</a>
-     </section>
-     `;
-    throw new Error("Missing id query param on edit page");
+    </section>
+  `;
+  throw new Error("Missing/invalid id query param on edit page");
 }
 
+// Optional: basic UUID format check to prevent bad API calls
+const uuidRegex =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
+if (!uuidRegex.test(postId)) {
+  root.innerHTML = `
+    <section class="container">
+      <h1>Edit post</h1>
+      <p class="form-message" data-type="error">Post ID is not a valid UUID.</p>
+      <a class="btn btn--primary" href="${CONFIG.BASE_PATH}index.html">Back to feed</a>
+    </section>
+  `;
+  throw new Error("Invalid UUID in edit page query param");
+}
 
 function render() {
-  root.innerHTML =`
+  root.innerHTML = `
     <section class="edit-post container">
-    <h1>Edit post</h1>
+      <h1>Edit post</h1>
 
-    <form id="editPostForm" class="form">
-      <div class="form-group">
-        <label for="title">Title</label>
-        <input id="title" name="title" type="text" maxlength="120" required/>
-      </div>
+      <form id="editPostForm" class="form" novalidate>
+        <div class="form-group">
+          <label for="title">Title</label>
+          <input id="title" name="title" type="text" maxlength="120" required />
+        </div>
 
+        <div class="form-group">
+          <label for="body">Body</label>
+          <textarea id="body" name="body" rows="8" required></textarea>
+        </div>
 
-      <div class="form-group">
-        <label for="body">Body</label>
-        <textarea id="body" name="body" rows="8" required></textarea>
-      </div>
+        <div class="form-group">
+          <label for="mediaUrl">Media URL (optional)</label>
+          <input id="mediaUrl" name="mediaUrl" type="url" />
+        </div>
 
+        <div class="form-group">
+          <label for="mediaAlt">Image alt text (optional)</label>
+          <input id="mediaAlt" name="mediaAlt" type="text" maxlength="120" />
+        </div>
 
-      <div class="form-group">
-        <label for="mediaUrl">Media URL (optional)</label>
-        <input id="mediaUrl" name="mediaUrl" type="url" />
-      </div>
-
-
-      <div class="form-group">
-        <label for="mediaAlt">Image alt text (optional)</label>
-        <input id="mediaAlt" name="mediaAlt" type="text" maxlength="120" />
-      </div>
-
-
-      <button type="submit" class="btn btn--primary" id="submitBtn">Save changes</button>
-      <p id="formMessage" class="form-message" aria-live="polite"></p>
-    </form>
-  </section>
+        <button type="submit" class="btn btn--primary" id="submitBtn">Save changes</button>
+        <p id="formMessage" class="form-message" aria-live="polite"></p>
+      </form>
+    </section>
   `;
 }
-
 
 function setMessage(message, type = "info") {
   const el = document.querySelector("#formMessage");
@@ -78,21 +84,19 @@ function setMessage(message, type = "info") {
   el.dataset.type = type;
 }
 
-
 function setSubmitting(isSubmitting) {
   const btn = document.querySelector("#submitBtn");
   if (btn) btn.disabled = isSubmitting;
 }
 
-
 function populateForm(post) {
   const form = document.querySelector("#editPostForm");
   if (!form) return;
 
-  form.title.value = post?.title ??"";
-  form.body.value = post?.body ??"";
-  form.mediaUrl.value = post?.media?.url ??"";
-  form.mediaAlt.value = post?.media?.alt ??"";
+  form.title.value = post?.title ?? "";
+  form.body.value = post?.body ?? "";
+  form.mediaUrl.value = post?.media?.url ?? "";
+  form.mediaAlt.value = post?.media?.alt ?? "";
 }
 
 function buildPayload(form) {
@@ -101,12 +105,11 @@ function buildPayload(form) {
   const mediaUrl = form.mediaUrl.value.trim();
   const mediaAlt = form.mediaAlt.value.trim();
 
-
   if (!title || !body) {
     return { error: "Title and body are required." };
   }
 
-   const payload = { title, body };
+  const payload = { title, body };
 
   if (mediaUrl) {
     payload.media = { url: mediaUrl, alt: mediaAlt || "" };
@@ -119,20 +122,20 @@ async function onSubmit(e) {
   e.preventDefault();
 
   const form = e.currentTarget;
-
   setMessage("");
   setSubmitting(true);
 
-   try {
+  try {
     const { payload, error } = buildPayload(form);
+
     if (error) {
       setMessage(error, "error");
       return;
     }
 
-       await updatePost(postId, payload);
+    await updatePost(postId, payload);
 
-    setMessage("Post updated. Redirecting...", "success");
+    setMessage("Post updated. Redirecting…", "success");
     window.location.href = `${CONFIG.BASE_PATH}post/index.html?id=${postId}`;
   } catch (err) {
     console.error(err);
@@ -148,7 +151,7 @@ async function init() {
   setSubmitting(true);
   setMessage("Loading post…");
 
-    try {
+  try {
     const post = await getPostById(postId);
     populateForm(post);
     setMessage("");
@@ -171,4 +174,3 @@ async function init() {
 }
 
 init();
-
