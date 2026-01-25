@@ -31,8 +31,14 @@ body {
   line-height: var(--lh-normal);
   color: var(--color-text);
   background: var(--color-bg);
+  flex-direction: column;
  
 }
+
+.site-main {
+  flex: 1;
+}
+
 .container {
   width: 100%;
   max-width: 1100px;    
