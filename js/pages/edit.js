@@ -1,5 +1,5 @@
 import { renderLayout } from "../components/layout.js";
-import { getAccessToken } from "../storage/token.js";
+import { getToken } from "../storage/token.js";
 import { CONFIG } from "../api/config.js";
 import { getPostById, updatePost } from "../api/posts.js";
 
@@ -11,7 +11,7 @@ const root = document.querySelector("#page-root");
 if (!root) throw new Error("missing #page-root");
 
 
-const token = getAccessToken();
+const token = getToken();
 if (!token) {
   window.location.href = `${CONFIG.BASE_PATH}account/login.html`;
   throw new Error("No access token - redirecting to login");
