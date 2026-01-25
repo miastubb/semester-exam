@@ -1,12 +1,14 @@
 import { renderLayout } from "../components/layout.js";
 import { getAccessToken } from "../storage/token.js";
-import { apiRequest } from "../api/client.js";
 import { CONFIG } from "../api/config.js";
+import { getPostById, updatePost } from "../api/posts.js";
+
 
 renderLayout();
 
 
 const root = document.querySelector("#page-root");
+if (!root) throw new Error("missing #page-root");
 
 
 const token = getAccessToken();
@@ -31,13 +33,10 @@ if (!postId) {
 }
 
 
-const POST_BASE = `/social/posts/${CONFIG.BLOG_NAME}`;
-
-
 function render() {
   root.innerHTML =`
-    <section class="edit-post">
-    <h1>Edit Post</h1>
+    <section class="edit-post container">
+    <h1>Edit post</h1>
 
     <form id="editPostForm" class="form">
       <div class="form-group">
@@ -86,6 +85,16 @@ function setSubmitting(isSubmitting) {
 }
 
 
+function populateForm(post) {
+  const form = document.querySelector("#editPostForm");
+  if (!form) return;
+
+  form.title.value = post?.title ??"";
+  form.body.value = post?.body ??"";
+  form.mediaUrl.value = post?.media?.url ??"";
+  form.mediaAlt.value = post?.media?.alt ??"";
+}
+
 function buildPayload(form) {
   const title = form.title.value.trim();
   const body = form.body.value.trim();
@@ -94,7 +103,7 @@ function buildPayload(form) {
 
 
   if (!title || !body) {
-    throw new Error("Title and body are required");
+    return { error: "Title and body are required." };
   }
 
    const payload = { title, body };
@@ -103,83 +112,63 @@ function buildPayload(form) {
     payload.media = { url: mediaUrl, alt: mediaAlt || "" };
   }
 
-  return payload;
+  return { payload };
 }
-
-
-function populateForm(post) {
-  const form = document.querySelector("#editPostForm");
-  if (!form) return;
-
-  form.title.value = post?.title ?? "";
-  form.body.value = post?.body ?? "";
-
-  form.mediaUrl.value = post?.media?.url ?? "";
-  form.mediaAlt.value = post?.media?.alt ?? "";
-}
-
-
-async function fetchPostById(id) {
-  return apiRequest(`${POST_BASE}/${id}`);
-}
-
-
-async function updatePost(id, payload) {
-  return apiRequest(`${POST_BASE}/${id}`, {
-    method: "PUT",
-    body: JSON.stringify(payload),
-});
-}
-
 
 async function onSubmit(e) {
   e.preventDefault();
-   const form = e.currentTarget;
+
+  const form = e.currentTarget;
+
+  setMessage("");
+  setSubmitting(true);
 
    try {
-    setMessage("");
-    setSubmitting(true);
+    const { payload, error } = buildPayload(form);
+    if (error) {
+      setMessage(error, "error");
+      return;
+    }
 
-    const payload = buildPayload(form);
-    await updatePost(postId, payload);
+       await updatePost(postId, payload);
 
     setMessage("Post updated. Redirecting...", "success");
     window.location.href = `${CONFIG.BASE_PATH}post/index.html?id=${postId}`;
-   } catch (err) {
-      console.error(err);
-      setMessage(err.message || "Failed to update post.", "error");
-   } finally {
-     setSubmitting(false);
-   }
-}
-
-
-async function init() {
-  if (!root) return;
-
-  render();
-  setMessage("Loading post..");
-
-  try {
-    const post = await fetchPostById(postId);
-    populateForm(post);
-    setMessage(""); 
   } catch (err) {
     console.error(err);
-    setMessage(err.message || "Failed to load post.", "error");
-    return;
+    setMessage(err.message || "Failed to update post.", "error");
+  } finally {
+    setSubmitting(false);
+  }
 }
 
+async function init() {
+  render();
+
+  setSubmitting(true);
+  setMessage("Loading post…");
+
+    try {
+    const post = await getPostById(postId);
+    populateForm(post);
+    setMessage("");
+  } catch (err) {
+    console.error(err);
+    root.innerHTML = `
+      <section class="container">
+        <h1>Edit post</h1>
+        <p class="form-message" data-type="error">${err.message || "Failed to load post."}</p>
+        <a class="btn btn--primary" href="${CONFIG.BASE_PATH}index.html">Back to feed</a>
+      </section>
+    `;
+    return;
+  } finally {
+    setSubmitting(false);
+  }
 
   const form = document.querySelector("#editPostForm");
   form.addEventListener("submit", onSubmit);
 }
 
-
 init();
-
-
-  
-
-
 
