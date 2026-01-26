@@ -95,7 +95,7 @@ async function onSubmit(e) {
     await createPost(payload);
 
     setMessage("Post created. Redirecting...", "success");
-    window.location.href = `${CONFIG.BASE_PATH}/index.html`;
+    window.location.href = `${CONFIG.BASE_PATH}index.html`;
   } catch (err) {
     console.error(err);
     setMessage(err.message || "Failed to create post.", "error");
