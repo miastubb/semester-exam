@@ -1,6 +1,8 @@
 import { renderLayout } from "../components/layout.js";
 import { createPost } from "../api/posts.js";
 import { CONFIG } from "../api/config.js";
+import { getToken } from "../storage/token.js";
+
 
 renderLayout();
 
@@ -107,6 +109,13 @@ async function onSubmit(e) {
 
 function init() {
   if (!root) return;
+
+  const token = getToken();
+  if (!token) {
+    window.location.href = `${CONFIG.BASE_PATH}account/login.html`;
+    return;
+  }
+
   render();
 
   const form = document.querySelector("#createPostForm");
@@ -114,5 +123,6 @@ function init() {
 }
 
 init();
+
   
 
