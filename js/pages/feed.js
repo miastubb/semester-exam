@@ -44,7 +44,8 @@ async function init() {
   try {
     renderLoading();
     const response = await getPosts({ limit: 12, sort: "created", sortOrder: "desc" });
-    const posts = response?.data ?? [];
+    const posts = Array.isArray(response) ? response : (response?.data ?? []);
+
 
     if (posts.length === 0) {
       root.innerHTML = `<p>No posts yet. Create your first post.</p>`;
