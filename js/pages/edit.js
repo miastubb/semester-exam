@@ -1,7 +1,7 @@
 import { renderLayout } from "../components/layout.js";
 import { CONFIG } from "../api/config.js";
 import { getToken } from "../storage/token.js";
-import { getPostById, updatePost } from "../api/posts.js";
+import { getPostById, updatePost, deletePost } from "../api/posts.js";
 
 renderLayout();
 
@@ -29,7 +29,6 @@ if (!postId || postId === "undefined") {
   throw new Error("Missing/invalid id query param on edit page");
 }
 
-// Optional: basic UUID format check to prevent bad API calls
 const uuidRegex =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
@@ -72,9 +71,18 @@ function render() {
 
         <button type="submit" class="btn btn--primary" id="submitBtn">Save changes</button>
         <p id="formMessage" class="form-message" aria-live="polite"></p>
-      </form>
+        </form>
+
+      <section class="edit-post__danger" aria-label="Danger zone">
+        <p>This will permanently delete the post.</p>
+        <button type="button" class="btn btn--danger" id="deleteBtn">
+          Delete post
+        </button>
+      </section>
     </section>
   `;
+
+
 }
 
 function setMessage(message, type = "info") {
@@ -90,8 +98,7 @@ function setSubmitting(isSubmitting) {
 }
 
 function populateForm(post) {
-  const p = post?.data ?? post; 
-
+  const p = post?.data ?? post;
   const form = document.querySelector("#editPostForm");
   if (!form) return;
 
@@ -148,6 +155,34 @@ async function onSubmit(e) {
   }
 }
 
+function wireDelete() {
+  const btn = document.querySelector("#deleteBtn");
+  if (!btn) return;
+
+  btn.addEventListener("click", async () => {
+    const ok = confirm(
+      "Are you sure you want to delete this post? This action cannot be undone."
+    );
+    if (!ok) return;
+
+    try {
+      setSubmitting(true);
+      setMessage("Deleting post…");
+
+      await deletePost(postId);
+
+      setMessage("Post deleted. Redirecting…", "success");
+      window.location.href = `${CONFIG.BASE_PATH}index.html`;
+    } catch (err) {
+      console.error(err);
+      setMessage(err.message || "Failed to delete post.", "error");
+    } finally {
+      setSubmitting(false);
+    }
+  });
+}
+
+
 async function init() {
   render();
 
@@ -174,6 +209,8 @@ async function init() {
 
   const form = document.querySelector("#editPostForm");
   form.addEventListener("submit", onSubmit);
+
+  wireDelete();
 }
 
 init();
