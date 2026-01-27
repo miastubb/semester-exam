@@ -1,0 +1,53 @@
+/* =========================
+   Page: Post
+   =========================
+   Minimal layout styles for single blog post.
+   Uses global typography, buttons, and forms.
+*/
+
+.post {
+  max-width: 720px;
+  margin: 0 auto;
+  display: grid;
+  gap: var(--space-24);
+}
+
+.post__header {
+  display: grid;
+  gap: var(--space-8);
+}
+
+.post__title {
+  margin: 0;
+  font-size: var(--text-3xl);
+  line-height: var(--lh-tight);
+}
+
+.post__meta {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.post__image {
+  width: 100%;
+  max-height: 420px;
+  object-fit: cover;
+  border-radius: var(--radius-md);
+}
+
+.post__body {
+  font-size: var(--text-md);
+  line-height: var(--lh-relaxed);
+}
+
+.post__actions {
+  display: flex;
+  gap: var(--space-12);
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+#pageMessage {
+  min-height: 18px;
+}

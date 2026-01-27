@@ -2,50 +2,47 @@
 
 @import url("./components/buttons.css");
 @import url("./components/forms.css");
-@import url("./components/cards.css");
-@import url("./components/carousel.css");
-@import url("./components/alerts.css");
-@import url("./components/modal.css");
 @import url("./components/header.css");
 @import url("./components/footer.css");
 
-/* Global styles */
-@import url("https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;600;700&display=swap");
+/* Global reset */
 *,
 *::before,
 *::after {
   box-sizing: border-box;
 }
 
-html, body {
-  margin: 0;
-  padding: 0;
-    overflow-x: hidden;
-  overflow-y: auto;
-}
-
 html,
 body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+
   font-family: var(--font-sans);
   font-size: var(--text-md);
   line-height: var(--lh-normal);
   color: var(--color-text);
   background: var(--color-bg);
-  flex-direction: column;
- 
+
+  overflow-x: hidden;
 }
 
-.site-main {
+
+main {
   flex: 1;
 }
 
 .container {
   width: 100%;
-  max-width: 1100px;    
+  max-width: var(--container-max);
   margin: 0 auto;
-  padding-left: 20px;
-  padding-right: 20px;
-  
+  padding-left: var(--container-pad);
+  padding-right: var(--container-pad);
 }
 
 @media (min-width: 768px) {
