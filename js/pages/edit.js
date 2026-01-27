@@ -90,14 +90,17 @@ function setSubmitting(isSubmitting) {
 }
 
 function populateForm(post) {
+  const p = post?.data ?? post; 
+
   const form = document.querySelector("#editPostForm");
   if (!form) return;
 
-  form.title.value = post?.title ?? "";
-  form.body.value = post?.body ?? "";
-  form.mediaUrl.value = post?.media?.url ?? "";
-  form.mediaAlt.value = post?.media?.alt ?? "";
+  form.title.value = p?.title ?? "";
+  form.body.value = p?.body ?? "";
+  form.mediaUrl.value = p?.media?.url ?? "";
+  form.mediaAlt.value = p?.media?.alt ?? "";
 }
+
 
 function buildPayload(form) {
   const title = form.title.value.trim();

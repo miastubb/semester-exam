@@ -74,6 +74,9 @@ function renderPost(post) {
       <div class="post__actions">
         <a class="btn btn--secondary" href="${CONFIG.BASE_PATH}index.html">Back</a>
 
+        <button type="button" class="btn btn--ghost" id="shareBtn">
+            Share
+        </button>
         ${
           token
             ? `
@@ -89,6 +92,7 @@ function renderPost(post) {
   `;
 
   if (token) wireDelete(postId);
+  wireShare();
 }
 
 function wireDelete(id) {
@@ -112,6 +116,29 @@ function wireDelete(id) {
       setMessage(err.message || "Failed to delete post.", "error");
     } finally {
       setBusy(false);
+    }
+  });
+}
+
+function wireShare() {
+  const btn = document.querySelector("#shareBtn");
+  if (!btn) return;
+
+  const url = window.location.href;
+
+  btn.addEventListener("click", async () => {
+    try {
+      if (navigator.share) {
+        await navigator.share({
+          title: document.title,
+          url,
+        });
+      } else {
+        await navigator.clipboard.writeText(url);
+        alert("Link copied to clipboard");
+      }
+    } catch (err) {
+      console.error("Share failed:", err);
     }
   });
 }
