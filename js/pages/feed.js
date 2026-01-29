@@ -25,7 +25,6 @@ function renderFeed(posts) {
     <section class="feed">
       <div class="feed__carousel" id="carousel-root">
         <h2>Latest</h2>
-        <p>(carousel comes next)</p>
       </div>
 
       <div class="feed__grid" id="grid-root" aria-label="latest posts"></div>
