@@ -2,13 +2,10 @@ import { getToken } from "../storage/token.js";
 import { CONFIG } from "./config.js";
 import { getApiKey } from "../storage/apiKey.js";
 
-
-
 export async function apiRequest(url, options = {}) {
   const headers = new Headers(options.headers || {});
   
   const hasBody = options.body !== null && options.body !== undefined;
-
 
   const isFormData =
     typeof FormData !== "undefined" && options.body instanceof FormData;
@@ -16,12 +13,10 @@ export async function apiRequest(url, options = {}) {
     headers.set("Content-Type", "application/json");
   }
 
-
   const token = getToken();
   if (token) {
         headers.set("Authorization", `Bearer ${token}`);
 }
-
 
   const apiKey = getApiKey();
   if (apiKey) {
@@ -30,7 +25,6 @@ export async function apiRequest(url, options = {}) {
 
   const fullUrl = url.startsWith("/") ? `${CONFIG.BASE_URL}${url}` : url;
   const response = await fetch(fullUrl, { ...options, headers });
-
 
   const contentType = response.headers.get("content-type") || "";
   const payload = contentType.includes("application/json")
