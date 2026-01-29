@@ -6,7 +6,7 @@ export default function Footer() {
       <p class="site-footer__text">
         &copy; ${year} Client Name. All rights reserved.
       </p>
-      <p class="site-footer__text" site-footer__muted">
+      <p class="site-footer__text site-footer__muted">
         Built for the Noroff FED1 semester exam.
       </p>
     </div>
