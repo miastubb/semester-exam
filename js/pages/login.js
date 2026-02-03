@@ -16,7 +16,7 @@ root.innerHTML = `
 
       <form id="loginForm" novalidate>
         <div class="form-group">
-          <label for="email">Email (stud.noroff.no)</label>
+          <label for="email">Email (stud.noroff.no / noroff.no)</label>
           <input id="email" name="email" type="email" autocomplete="email" required />
           <p class="field-error" data-error-for="email" aria-live="polite"></p>
         </div>
@@ -59,10 +59,16 @@ function validateLogin({ email, password}) {
   if (!email) {
     setFieldError("email", "Email is required");
     ok = false;
-  } else if (!email.endsWith("@stud.noroff.no")) {
-    setFieldError("email", "Use your stud.noroff.no address");
-   ok = false;
+  } else {
+  const e = email.toLowerCase();
+  const allowedDomains = ["@stud.noroff.no", "@noroff.no"];
+
+  if (!allowedDomains.some((d) => e.endsWith(d))) {
+    setFieldError("email", "Use your Noroff email address");
+    ok = false;
   }
+}
+
 
   if (!password) {
     setFieldError("password", "Password is required");
@@ -94,6 +100,8 @@ form.addEventListener("submit", async (e) => {
   if (!accessToken) throw new Error("login succeeded but no access token returned");
 
     setToken(accessToken);
+
+    localStorage.removeItem("noroffApiKey");
 
 
   
