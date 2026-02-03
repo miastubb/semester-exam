@@ -1,17 +1,18 @@
 .feed__grid {
   display: grid;
-  gap: 16px;
+  gap: var(--space-16);
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  margin-top: 16px;
+  margin-top: var(--space-16);
 }
 
 
 .post-card {
-  border: 1px solid #ccc;
-  border-radius: 8px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
   overflow: hidden;
-  background: #fff;
+  background: var(--color-surface);
 }
+
 
 .post-card__link {
   display: block;
@@ -35,20 +36,20 @@
 .post-card__placeholder {
   width: 100%;
   height: 160px;
-  background: #e9e9e9;
+   background: var(--color-surface-muted);
 }
 
 .post-card__content {
-  padding: 12px;
+  padding: var(--space-12);
 }
 
 .post-card__title {
   margin: 0 0 8px 0;
-  font-size: 18px;
+  font-size: var(--text-lg);
 }
 
 .post-card__meta {
   margin: 0;
-  font-size: 14px;
+  font-size: var(--text-sm);
   opacity: 0.75;
 }

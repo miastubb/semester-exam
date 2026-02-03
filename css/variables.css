@@ -39,7 +39,7 @@
   ========================== */
   --color-text: #1f1f1f;
   --color-text-muted: rgba(0, 0, 0, 0.65);
-  --color-bg: #ffffff;
+  --color-bg: #eeebf0;
 
   --color-surface: #ffffff;
   --color-surface-muted: #f7f7f7;
@@ -52,7 +52,7 @@
      (Your header background is brand-adjacent)
   ========================== */
   --color-brand-100: #f5e5ff; /* header background */
-  --color-brand-200: #eed3ff;
+  --color-brand-200: rgb(250, 243, 254);
 
   /* Accent can be used for buttons, links, highlights */
   --color-accent: #6f2dbd;

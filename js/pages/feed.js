@@ -30,8 +30,6 @@ function escapeHtml(str) {
 }
 
 function normalizePost(post) {
-  // Your API utilities sometimes return { data: ... } or raw objects,
-  // so normalize defensively.
   return post?.data ?? post;
 }
 
@@ -41,7 +39,7 @@ function buildCarousel(posts) {
 
   const items = posts.slice(0, 3).map(normalizePost).filter(Boolean);
 
-  // If fewer than 3 exist, still render whatever we have (exam-safe).
+  
   if (items.length === 0) {
     carouselRoot.innerHTML = `<h2>Latest</h2><p>No posts yet.</p>`;
     return;
@@ -64,29 +62,40 @@ function buildCarousel(posts) {
         </div>
       </div>
 
-      <div class="carousel__viewport">
+     <div class="carousel__viewport">
         <div class="carousel__track" id="carouselTrack">
           ${items
             .map((p) => {
               const id = escapeHtml(p.id);
               const title = escapeHtml(p.title);
-              const body = escapeHtml(p.body);
+              const bodyRaw = String(p.body ?? "");
+              const body = escapeHtml(bodyRaw.length > 160 ? bodyRaw.slice(0, 160) + "…" : bodyRaw);
               const imgUrl = p?.media?.url ? escapeHtml(p.media.url) : "";
               const imgAlt = escapeHtml(p?.media?.alt || p?.title || "Blog post image");
 
-              return `
-                <article class="carousel__slide" role="group" aria-roledescription="slide">
-                  ${
-                    imgUrl
-                      ? `<img class="carousel__image" src="${imgUrl}" alt="${imgAlt}">`
-                      : ``
-                  }
+         return `
+          <article class="carousel__slide" role="group" aria-roledescription="slide">
+               ${
+                imgUrl
+                  ? `<img
+                       class="carousel__image"
+                       src="${imgUrl}"
+                       alt="${imgAlt}"
+                      ${items.indexOf(p) === 0
+                       ? 'loading="eager" fetchpriority="high" decoding="async"'
+                       : 'loading="lazy" decoding="async"'}
+                   >`
+              : ``
+          }
+
                   <div class="carousel__content">
                     <h3 class="carousel__slideTitle">${title}</h3>
                     <p class="carousel__excerpt">${body}</p>
                     <a class="btn btn--primary" href="${CONFIG.BASE_PATH}post/index.html?id=${id}">
-                      Read more
+                    Read more: ${title}
                     </a>
+
+
                   </div>
                 </article>
               `;
@@ -121,7 +130,7 @@ function buildCarousel(posts) {
   const dots = Array.from(document.querySelectorAll(".carousel__dot"));
 
   function update() {
-    // translate track by slide width (100% per slide)
+  
     track.style.transform = `translateX(-${index * 100}%)`;
 
     dots.forEach((d, i) => {
@@ -130,12 +139,13 @@ function buildCarousel(posts) {
   }
 
   function goNext() {
-    index = (index + 1) % items.length; // loop to first after last
-    update();
-  }
+  index = (index + 1) % items.length;
+  update();
+}
+
 
   function goPrev() {
-    index = (index - 1 + items.length) % items.length; // loop to last before first
+    index = (index - 1 + items.length) % items.length; 
     update();
   }
 
@@ -152,8 +162,26 @@ function buildCarousel(posts) {
     });
   });
 
-  // Ensure animation happens (CSS should apply transition)
+ 
   update();
+
+  let timer = setInterval(goNext, 6000);
+
+const viewport = carouselRoot.querySelector(".carousel__viewport");
+
+function pauseAuto() {
+  clearInterval(timer);
+  timer = null;
+}
+
+function resumeAuto() {
+  if (!timer) timer = setInterval(goNext, 6000);
+}
+
+viewport?.addEventListener("mouseenter", pauseAuto);
+viewport?.addEventListener("mouseleave", resumeAuto);
+viewport?.addEventListener("focusin", pauseAuto);
+viewport?.addEventListener("focusout", resumeAuto);
 }
 
 function renderFeed(posts) {
@@ -164,10 +192,9 @@ function renderFeed(posts) {
     </section>
   `;
 
-  // Carousel: 3 latest
+ 
   buildCarousel(posts);
 
-  // Grid: 12 latest
   const grid = document.querySelector("#grid-root");
   posts.slice(0, 12).forEach((post) => {
     grid.appendChild(createPostCard(normalizePost(post)));
@@ -180,7 +207,7 @@ async function init() {
   try {
     renderLoading();
 
-    // You’re already sorting by created desc – perfect for "latest"
+   
     const response = await getPosts({ limit: 12, sort: "created", sortOrder: "desc" });
     const posts = Array.isArray(response) ? response : (response?.data ?? []);
 
