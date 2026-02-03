@@ -22,7 +22,8 @@ export function renderLayout() {
     if (logOutBtn) {
       logOutBtn.addEventListener("click", () => {
         clearToken();
-        window.location.href = `${CONFIG.BASE_PATH}index.html`;
+          localStorage.removeItem("noroffApiKey");
+          window.location.href = `${CONFIG.BASE_PATH}index.html`;
       });
     }
   }

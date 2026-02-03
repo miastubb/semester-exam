@@ -28,8 +28,6 @@ export default function Header() {
   <div class="site-header site-header--centered">
     <div class="site-header__inner">
       <a class="brand brand--text" href="${BASE_PATH}index.html" aria-label="Go to blog feed">
-        <span class="brand__mark">Animal Blog</span>
-        <span class="brand__name">Client Name</span>
       </a>
 
        <a class="brand brand--logo" href="${BASE_PATH}index.html" aria-label="Go to BlogWorld feed">

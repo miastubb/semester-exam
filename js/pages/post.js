@@ -54,18 +54,39 @@ function renderPost(post) {
 
   container.innerHTML = `
     <article class="post">
-      <header class="post__header">
-        <h1 class="post__title">${escapeHtml(p?.title ?? "")}</h1>
-        ${
-          p?.author?.name
-            ? `<p class="post__meta">By ${escapeHtml(p.author.name)}</p>`
-            : ""
-        }
-      </header>
+     <header class="post__header">
+  <h1 class="post__title">${escapeHtml(p?.title ?? "")}</h1>
+
+  ${
+    (p?.author?.name || p?.created)
+      ? `
+        <p class="post__meta">
+          ${p?.author?.name ? `By ${escapeHtml(p.author.name)}` : ""}
+          ${p?.author?.name && p?.created ? " • " : ""}
+          ${
+            p?.created
+              ? (() => {
+                  const iso = String(p.created);
+                  const pretty = new Date(iso).toLocaleDateString(undefined, {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  });
+                  return `<time datetime="${escapeHtml(iso)}">${escapeHtml(pretty)}</time>`;
+                })()
+              : ""
+          }
+        </p>
+      `
+      : ""
+  }
+</header>
+
 
       ${
         p?.media?.url
-          ? `<img class="post__image" src="${p.media.url}" alt="${escapeHtml(p.media.alt ?? "")}">`
+          ? `<img class="post__image" src="${escapeHtml(p.media.url)}" alt="${escapeHtml(p.media.alt ?? "")}">`
+
           : ""
       }
 
@@ -74,9 +95,10 @@ function renderPost(post) {
       <div class="post__actions">
         <a class="btn btn--secondary" href="${CONFIG.BASE_PATH}index.html">Back</a>
 
-        <button type="button" class="btn btn--ghost" id="shareBtn">
-            Share
-        </button>
+        <button type="button" class="btn btn--ghost" id="shareBtn" aria-label="Share this post">
+          <span aria-hidden="true">🔗</span> Share
+       </button>
+
         ${
           token
             ? `
@@ -135,8 +157,9 @@ function wireShare() {
         });
       } else {
         await navigator.clipboard.writeText(url);
-        alert("Link copied to clipboard");
+        setMessage("Link copied to clipboard.", "success");
       }
+
     } catch (err) {
       console.error("Share failed:", err);
     }

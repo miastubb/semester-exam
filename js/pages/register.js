@@ -31,11 +31,25 @@ root.innerHTML = `
         </div>
 
 
-        <div class="form-group">
-          <label for="password">Password</label>
+     <div class="form-group">
+       <label for="password">Password</label>
+
+       <div class="password-field">
           <input id="password" name="password" type="password" autocomplete="new-password" minlength="8" required />
-          <p class="field-error" data-error-for="password" aria-live="polite"></p>
-        </div>
+          <button
+             type="button"
+             class="password-field__toggle"
+             aria-label="Show password"
+             aria-pressed="false"
+             data-toggle-password="password"
+           >
+             👁
+           </button>
+      </div>
+
+  <p class="field-error" data-error-for="password" aria-live="polite"></p>
+</div>
+
 
 
         <button class="btn btn--primary" type="submit">Create account</button>
@@ -52,6 +66,26 @@ root.innerHTML = `
 
 const form = document.getElementById("registerForm");
 const formError = document.getElementById("formError");
+
+initPasswordToggles();
+
+
+function initPasswordToggles() {
+  root.querySelectorAll("[data-toggle-password]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const inputId = btn.getAttribute("data-toggle-password");
+      const input = document.getElementById(inputId);
+      if (!input) return;
+
+      const show = input.type === "password";
+      input.type = show ? "text" : "password";
+
+      btn.setAttribute("aria-pressed", String(show));
+      btn.setAttribute("aria-label", show ? "Hide password" : "Show password");
+    });
+  });
+}
+
 
 function setFieldError(name, message) {
   const el = root.querySelector(`[data-error-for="${name}"]`);
