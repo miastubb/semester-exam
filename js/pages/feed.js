@@ -92,7 +92,7 @@ function buildCarousel(posts) {
                     <h3 class="carousel__slideTitle">${title}</h3>
                     <p class="carousel__excerpt">${body}</p>
                     <a class="btn btn--primary" href="${CONFIG.BASE_PATH}post/index.html?id=${id}">
-                    Read more: ${title}
+                    Read more:  ${title}
                     </a>
 
 
