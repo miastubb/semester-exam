@@ -52,7 +52,7 @@
      (Your header background is brand-adjacent)
   ========================== */
   --color-brand-100: #b59ed5; /* header background */
-  --color-brand-200: rgb(250, 243, 254);
+  --color-brand-200: #F3F9FE;
 
   /* Accent can be used for buttons, links, highlights */
   --color-accent: #6f2dbd;
